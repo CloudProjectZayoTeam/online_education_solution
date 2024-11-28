@@ -9,21 +9,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author Arejdal
  **/
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Cours {
+public class Reponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String titre;
-    private String description;
-    private Date dateCreation;
+    private int idQuestion;
+    private String Response;
+    private boolean estCorrect;
 }

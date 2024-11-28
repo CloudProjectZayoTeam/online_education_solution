@@ -27,44 +27,4 @@ public class Progression {
     private int idQuiz;
     private float score;
     private Date datePassage;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdEtudiant() {
-        return idEtudiant;
-    }
-
-    public void setIdEtudiant(int idEtudiant) {
-        this.idEtudiant = idEtudiant;
-    }
-
-    public int getIdQuiz() {
-        return idQuiz;
-    }
-
-    public void setIdQuiz(int idQuiz) {
-        this.idQuiz = idQuiz;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
-    }
-
-    public Date getDatePassage() {
-        return datePassage;
-    }
-
-    public void setDatePassage(Date datePassage) {
-        this.datePassage = datePassage;
-    }
 }

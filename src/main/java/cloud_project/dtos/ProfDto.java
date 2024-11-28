@@ -1,6 +1,6 @@
 package cloud_project.dtos;
 
-import com.zayocloud.zayocloud.entity.Prof;
+import cloud_project.entity.Prof;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

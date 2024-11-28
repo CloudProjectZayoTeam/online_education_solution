@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author Arejdal
  **/
@@ -19,11 +17,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Cours {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String titre;
-    private String description;
-    private Date dateCreation;
+    private int idQuiz;
+    private String question;
+    private int correctReponse;
 }
