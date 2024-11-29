@@ -18,7 +18,7 @@ public class CustomBasicAuthenticationEntryPoint implements AuthenticationEntryP
         String message = (authException != null && authException.getMessage() != null) ? authException.getMessage()
                 : "Unauthorized";
         String path = request.getRequestURI();
-        response.setHeader("BigSolutions-error-reason", "Authentication failed");
+        response.setHeader("CloudProject-error-reason", "Authentication failed");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
         String jsonResponse =

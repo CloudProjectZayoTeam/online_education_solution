@@ -1,61 +1,47 @@
 package cloud_project.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-/**
- * @author Arejdal
- **/
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "cours")
 public class Cours {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
+    @NotBlank(message = "Le titre ne peut pas être vide")
+    @Column(nullable = false)
     private String titre;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
-    private Date dateCreation;
 
-    public int getId() {
-        return id;
-    }
+    @NotNull(message = "Le type de cours est obligatoire")
+    @Enumerated(EnumType.STRING)
+    private TypeCours typeCours;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @NotNull(message = "Le fichier est obligatoire")
+    @Column(nullable = false)
+    private String fichierUrl;
 
-    public String getTitre() {
-        return titre;
-    }
+    @CreationTimestamp
+    private LocalDateTime dateCreation;
 
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
+    @UpdateTimestamp
+    private LocalDateTime dateModification;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prof_id", nullable = false)
+    private Prof prof;
 }

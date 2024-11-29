@@ -46,7 +46,7 @@ public class JwtTokenProvider {
 
     public String generateToken(String email, String authorities) {
         return Jwts.builder()
-                .setIssuer("BigSolutions")
+                .setIssuer("CloudProject")
                 .setSubject(email)
                 .claim("authorities", authorities)
                 .setIssuedAt(new java.util.Date())

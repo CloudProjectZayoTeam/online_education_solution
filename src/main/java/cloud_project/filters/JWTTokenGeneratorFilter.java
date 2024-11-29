@@ -1,6 +1,7 @@
 package cloud_project.filters;
 
 import cloud_project.constants.ApplicationConstants;
+import cloud_project.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -8,8 +9,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,8 +20,6 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
-
-    private static final Logger logger = LoggerFactory.getLogger(JWTTokenGeneratorFilter.class);
 
     private final SecretKey secretKey;
 
@@ -39,7 +36,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             if (authentication != null && authentication.isAuthenticated()) {
                 User user = (User) authentication.getPrincipal();
                 String jwt = Jwts.builder()
-                        .setIssuer("BigSolutions")
+                        .setIssuer("CloudProject")
                         .setSubject(user.getEmail())
                         .claim("authorities", user.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)

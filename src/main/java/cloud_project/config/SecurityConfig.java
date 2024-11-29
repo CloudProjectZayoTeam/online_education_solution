@@ -2,6 +2,7 @@ package cloud_project.config;
 
 import cloud_project.exceptions.CustomAccessDeniedHandler;
 import cloud_project.exceptions.CustomBasicAuthenticationEntryPoint;
+import cloud_project.filters.CsrfCookieFilter;
 import cloud_project.filters.JWTTokenGeneratorFilter;
 import cloud_project.filters.JWTTokenValidatorFilter;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable())
 
+                .addFilterAfter(new CsrfCookieFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTTokenValidatorFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), UsernamePasswordAuthenticationFilter.class)
 
