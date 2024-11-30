@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Data
 @Schema(name = "UserProfileDto", description = "DTO for displaying user profile information")
@@ -25,7 +26,7 @@ public class UserProfileDto {
     @Schema(description = "Last update date of the user profile", example = "2024-08-11T12:45:00")
     private LocalDateTime updatedAt;
 
-    User user = UserRepository.findByEmail(email);
+    Optional<User> user = UserRepository.findByEmail(email);
 
 
 }

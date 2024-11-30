@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/profile/**", "/addresses/**", "/payment-methods/**", "/preferences/**").hasRole("USER")
+                        .requestMatchers("/profile/**").hasAnyRole("PROF","ETUDIANT")
                         .anyRequest().permitAll())
 
                 .formLogin(Customizer.withDefaults())
