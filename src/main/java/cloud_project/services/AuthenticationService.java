@@ -52,14 +52,14 @@ public class AuthenticationService {
                 });
         String verificationCode = emailService.generateResetCode();
         emailService.sendEmail(registerUserDto.getEmail(), "Verification Code", "Your verification code is: " + verificationCode);
-        User user = userMapper.toEntity(registerUserDto); // Utilisation du UserMapper
+        User user = userMapper.toEntity(registerUserDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         VerificationCode codeEntity = new VerificationCode();
         codeEntity.setCode(verificationCode);
         codeEntity.setType("EMAIL_VERIFICATION");
         codeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(15));
         codeEntity.setUser(user);
-        // Ajout du code de vérification
+
         if (user.getVerificationCodes() == null) {
             user.setVerificationCodes(new ArrayList<>());
         }
@@ -69,16 +69,13 @@ public class AuthenticationService {
 
     public LoginResponseDto loginUser(LoginRequestDTO loginRequest) {
         try {
-            // Récupération de l'utilisateur par email
             User user = userRepository.findByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new RuntimeException("User not found: " + loginRequest.getEmail()));
 
-            // Vérification si l'email est vérifié
             if (!user.isEmailVerified()) {
                 throw new RuntimeException("Email not verified. Please verify your email before logging in.");
             }
 
-            // Procéder à l'authentification
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -86,7 +83,7 @@ public class AuthenticationService {
                 String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY, ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
                 SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
                 String jwt = Jwts.builder()
-                        .setIssuer("BigSolutions")
+                        .setIssuer("CloudProject")
                         .setSubject(authentication.getName())
                         .claim("authorities", authentication.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
@@ -96,7 +93,6 @@ public class AuthenticationService {
                         .signWith(secretKey, SignatureAlgorithm.HS256)
                         .compact();
 
-                // Création de la session
                 Session session = new Session();
                 session.setToken(jwt);
                 session.setUser(user);
@@ -113,7 +109,6 @@ public class AuthenticationService {
         }
     }
 
-
     public void initiatePasswordReset(ForgotPasswordDto forgotPasswordDto) {
         User user = userRepository.findByEmail(forgotPasswordDto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", forgotPasswordDto.getEmail()));
@@ -122,7 +117,7 @@ public class AuthenticationService {
         VerificationCode verificationCode = new VerificationCode();
         verificationCode.setCode(resetCode);
         verificationCode.setType("PASSWORD_RESET");
-        verificationCode.setExpirationDate(LocalDateTime.now().plusMinutes(15)); // 15 minutes
+        verificationCode.setExpirationDate(LocalDateTime.now().plusMinutes(15));
         verificationCode.setUser(user);
         user.getVerificationCodes().add(verificationCode);
         userRepository.save(user);
@@ -152,7 +147,6 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(newPasswordDto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", newPasswordDto.getEmail()));
 
-        // Vérifier si un code de réinitialisation vérifié et valide existe pour l'utilisateur
         VerificationCode verificationCode = user.getVerificationCodes().stream()
                 .filter(code -> code.getType().equals("PASSWORD_RESET") && code.isVerified() && code.getExpirationDate().isAfter(LocalDateTime.now()))
                 .findFirst()
@@ -162,14 +156,11 @@ public class AuthenticationService {
             throw new RuntimeException("Passwords do not match");
         }
 
-        // Mettre à jour le mot de passe
         user.setPassword(passwordEncoder.encode(newPasswordDto.getPassword()));
         userRepository.save(user);
 
-        // Déconnexion de tous les appareils en supprimant toutes les sessions
         sessionRepository.deleteAllByUser(user);
 
-        // Nettoyage du contexte de sécurité
         SecurityContextHolder.clearContext();
     }
 

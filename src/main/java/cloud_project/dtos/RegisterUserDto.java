@@ -6,6 +6,8 @@ import cloud_project.utils.PasswordsMatch;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @PasswordsMatch
@@ -25,6 +27,11 @@ public class RegisterUserDto {
     @Email(message = "Email should be valid")
     private String email;
 
+    @Schema(description = "mobile number for the user", example = "06 06 06 06 06!")
+    @NotEmpty(message = "mobile number cannot be empty")
+    @Pattern(regexp = "^[0-9]{10}$", message = "The phone number must be ten digits!")
+    private String mobileNumber;
+
     @Schema(description = "Password for the user", example = "Password123!")
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8, message = "Password must be at least 8 characters long")
@@ -37,6 +44,8 @@ public class RegisterUserDto {
     private String confirmPassword;
 
 
+    @Setter
+    @Getter
     @NotNull(message = "Le rôle ne peut pas être vide")
     private Role role;
 
@@ -69,5 +78,7 @@ public class RegisterUserDto {
             message = "L'année d'étude est requise pour un étudiant"
     )
     private Integer yearOfStudy;
+
+
 }
 

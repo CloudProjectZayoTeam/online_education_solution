@@ -26,6 +26,9 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
+            System.out.println("JWT Claims: " + claims);
+
             return claims.getSubject();
         } catch (Exception e) {
             throw new IllegalArgumentException("Token parsing failed!", e);

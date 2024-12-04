@@ -81,6 +81,8 @@ public class UserController {
         }
     }
 
+
+
     @GetMapping
     public ResponseEntity<UserProfileDto> getUserProfileInfo(@RequestHeader("Authorization") String token) {
         try {
@@ -91,6 +93,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+
 
     @PostMapping("/upload-image")
     public ResponseEntity<String> uploadImage(@RequestHeader("Authorization") String token,
@@ -104,6 +108,7 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/download-image")
     public ResponseEntity<byte[]> downloadImage(@RequestHeader("Authorization") String token) {
         try {
@@ -114,6 +119,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(@RequestHeader("Authorization") String authorizationHeader) {

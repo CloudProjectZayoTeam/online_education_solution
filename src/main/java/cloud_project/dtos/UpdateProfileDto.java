@@ -2,7 +2,6 @@ package cloud_project.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -19,6 +18,10 @@ public class UpdateProfileDto {
     @Email(message = "Email should be valid")
     private String email;
 
+    @Schema(description = "Phone number of the user", example = "0123456789")
+    @Pattern(regexp = "^[0-9]{10}$", message = "The phone number must be ten digits!")
+    private String mobileNumber;
+
     // Champs pour Professeur
     @Schema(description = "department", example = "MPI!")
     private String department;
@@ -33,8 +36,4 @@ public class UpdateProfileDto {
 
     @Schema(description = "yearOfStudy", example = "2!")
     private Integer yearOfStudy;
-
-    @Schema(description = "Phone number of the user", example = "0123456789")
-    @Pattern(regexp = "^[0-9]{10}$", message = "The phone number must be ten digits!")
-    private String mobileNumber;
 }
