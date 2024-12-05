@@ -22,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,12 +37,16 @@ public class SecurityConfig {
 
                 .cors(corsConfig -> corsConfig.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Collections.singletonList("http://192.168.11.104:8000"));
-                    config.setAllowedMethods(Collections.singletonList("*"));
-                    config.setAllowCredentials(true);
-                    config.setAllowedHeaders(Collections.singletonList("*"));
-                    config.setExposedHeaders(Arrays.asList("Authorization"));
-                    config.setMaxAge(3600L);
+                    config.setAllowedOrigins(Arrays.asList(
+                            "http://192.168.11.104:8000",
+                            "http://localhost:4200",
+                            "https://esilearning.netlify.app"
+                    )); // Add all allowed domains here
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Specify allowed methods
+                    config.setAllowCredentials(true); // Enable credentials (cookies, authorization headers)
+                    config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Specify allowed headers
+                    config.setExposedHeaders(Arrays.asList("Authorization")); // Specify exposed headers
+                    config.setMaxAge(3600L); // Cache preflight request for 1 hour
                     return config;
                 }))
 
